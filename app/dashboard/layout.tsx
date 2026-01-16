@@ -4,6 +4,16 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { format } from 'date-fns';
 import {
+type DuesSetting = {
+  id?: string
+  monthly_amount?: number
+  due_day?: number
+  late_fee?: number
+  grace_period_days?: number
+  gcash_number?: string
+  bank_details?: string
+}
+
   Settings,
   CreditCard,
   Bell,
@@ -78,13 +88,23 @@ export default function AdminSettings() {
 
   const queryClient = useQueryClient();
 
-  const { data: duesSetting } = useQuery({
-    queryKey: ['duesSetting'],
-    queryFn: async () => {
-      const settings = await base44.entities.DuesSetting.list('-effective_date', 1);
-      return settings[0] || null;
-    },
-  });
+type DuesSetting = {
+  id?: string
+  monthly_amount?: number
+  due_day?: number
+  late_fee?: number
+  grace_period_days?: number
+  gcash_number?: string
+  bank_details?: string
+}
+
+const { data: duesSetting } = useQuery<DuesSetting | null>({
+  queryKey: ['duesSetting'],
+  queryFn: async () => {
+    const settings = await base44.entities.DuesSetting.list('-effective_date', 1)
+    return (settings[0] as DuesSetting) || null
+  },
+});
 
   const { data: pendingPayments = [] } = useQuery({
     queryKey: ['pendingPayments'],
