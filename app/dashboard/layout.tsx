@@ -58,10 +58,14 @@ export default function DashboardLayout({
             <a
               key={item.id}
               href={`#${item.id}`}
-              onClick={() => {
-                setActive(item.id)
-                setOpen(false)
-              }}
+            onClick={() => {
+  setActive(item.id)
+  document
+    .querySelector(`[data-state][value="${item.id}"]`)
+    ?.scrollIntoView({ behavior: "smooth" })
+  setOpen(false)
+}}
+
               className={`
                 block rounded px-3 py-2 text-sm
                 ${active === item.id

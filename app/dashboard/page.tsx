@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import {
   Tabs,
   TabsList,
@@ -15,6 +16,8 @@ import {
 } from "lucide-react"
 
 export default function DashboardPage() {
+  const [activeTab, setActiveTab] = useState("payments")
+
   return (
     <div className="space-y-6">
       <div>
@@ -24,7 +27,11 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      <Tabs defaultValue="payments" className="space-y-6">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-6"
+      >
         <TabsList className="grid grid-cols-4 w-full max-w-2xl">
           <TabsTrigger value="payments">
             <CreditCard className="w-4 h-4 mr-2" />
@@ -44,58 +51,46 @@ export default function DashboardPage() {
           </TabsTrigger>
         </TabsList>
 
-        {/* PAYMENTS */}
         <TabsContent value="payments">
           <div id="payments">
             <Card>
               <CardHeader>
                 <CardTitle>Payments</CardTitle>
               </CardHeader>
-              <CardContent>
-                Payments content placeholder
-              </CardContent>
+              <CardContent>Payments content placeholder</CardContent>
             </Card>
           </div>
         </TabsContent>
 
-        {/* DUES */}
         <TabsContent value="dues">
           <div id="dues">
             <Card>
               <CardHeader>
                 <CardTitle>Dues</CardTitle>
               </CardHeader>
-              <CardContent>
-                Dues content placeholder
-              </CardContent>
+              <CardContent>Dues content placeholder</CardContent>
             </Card>
           </div>
         </TabsContent>
 
-        {/* ANNOUNCEMENTS */}
         <TabsContent value="announcements">
           <div id="announcements">
             <Card>
               <CardHeader>
                 <CardTitle>Announcements</CardTitle>
               </CardHeader>
-              <CardContent>
-                Announcements placeholder
-              </CardContent>
+              <CardContent>Announcements placeholder</CardContent>
             </Card>
           </div>
         </TabsContent>
 
-        {/* DOCUMENTS */}
         <TabsContent value="documents">
           <div id="documents">
             <Card>
               <CardHeader>
                 <CardTitle>Documents</CardTitle>
               </CardHeader>
-              <CardContent>
-                Documents placeholder
-              </CardContent>
+              <CardContent>Documents placeholder</CardContent>
             </Card>
           </div>
         </TabsContent>
