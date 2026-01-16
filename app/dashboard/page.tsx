@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   Tabs,
   TabsList,
@@ -18,6 +18,23 @@ import {
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState("payments")
 
+  // 🔁 Sync tab with URL hash (sidebar → tabs)
+  useEffect(() => {
+    const syncFromHash = () => {
+      const hash = window.location.hash.replace("#", "")
+      if (hash) {
+        setActiveTab(hash)
+      }
+    }
+
+    syncFromHash()
+    window.addEventListener("hashchange", syncFromHash)
+
+    return () => {
+      window.removeEventListener("hashchange", syncFromHash)
+    }
+  }, [])
+
   return (
     <div className="space-y-6">
       <div>
@@ -27,15 +44,14 @@ export default function DashboardPage() {
         </p>
       </div>
 
-     <Tabs
-  value={activeTab}
-  onValueChange={(value) => {
-    setActiveTab(value)
-    window.location.hash = value
-  }}
-  className="space-y-6"
->
-
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) => {
+          setActiveTab(value)
+          window.location.hash = value
+        }}
+        className="space-y-6"
+      >
         <TabsList className="grid grid-cols-4 w-full max-w-2xl">
           <TabsTrigger value="payments">
             <CreditCard className="w-4 h-4 mr-2" />
