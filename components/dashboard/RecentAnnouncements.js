@@ -10,18 +10,48 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import type { Announcement } from "@/types/announcement";
 
-const priorityConfig = {
-  urgent: { icon: AlertTriangle, color: "text-red-500", bg: "bg-red-50", border: "border-red-200" },
-  important: { icon: Bell, color: "text-amber-500", bg: "bg-amber-50", border: "border-amber-200" },
-  normal: { icon: Info, color: "text-blue-500", bg: "bg-blue-50", border: "border-blue-200" },
+type Props = {
+  announcements: Announcement[];
+  limit?: number;
+  showViewAll?: boolean;
+};
+
+const priorityConfig: Record<
+  Announcement["priority"],
+  {
+    icon: React.ElementType;
+    color: string;
+    bg: string;
+    border: string;
+  }
+> = {
+  urgent: {
+    icon: AlertTriangle,
+    color: "text-red-500",
+    bg: "bg-red-50",
+    border: "border-red-200",
+  },
+  important: {
+    icon: Bell,
+    color: "text-amber-500",
+    bg: "bg-amber-50",
+    border: "border-amber-200",
+  },
+  normal: {
+    icon: Info,
+    color: "text-blue-500",
+    bg: "bg-blue-50",
+    border: "border-blue-200",
+  },
 };
 
 export default function RecentAnnouncements({
-  announcements = [],
-  limit = 4,
-  showViewAll = true,
-}) {
+  announcements,
+  limit,
+  showViewAll = false,
+}: Props) {
   const list = limit ? announcements.slice(0, limit) : announcements;
 
   return (
@@ -49,7 +79,7 @@ export default function RecentAnnouncements({
       ) : (
         <div className="space-y-3">
           {list.map((a) => {
-            const cfg = priorityConfig[a.priority] ?? priorityConfig.normal;
+            const cfg = priorityConfig[a.priority];
             const Icon = cfg.icon;
 
             return (
@@ -62,13 +92,18 @@ export default function RecentAnnouncements({
                 )}
               >
                 <div className="flex gap-3">
-                  <div className={cn("p-2 rounded-lg bg-white", cfg.color)}>
+                  <div
+                    className={cn(
+                      "p-2 rounded-lg bg-white",
+                      cfg.color
+                    )}
+                  >
                     <Icon className="w-4 h-4" />
                   </div>
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      {a.is_pinned && (
+                      {a.isPinned && (
                         <Pin className="w-3 h-3 text-slate-400" />
                       )}
                       <h4 className="text-sm font-medium truncate">
@@ -81,7 +116,10 @@ export default function RecentAnnouncements({
                     </p>
 
                     <p className="text-xs text-slate-400 mt-2">
-                      {format(new Date(a.created_date), "MMM d, yyyy")}
+                      {format(
+                        new Date(a.createdAt),
+                        "MMM d, yyyy"
+                      )}
                     </p>
                   </div>
                 </div>
