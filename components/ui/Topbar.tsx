@@ -47,7 +47,6 @@ export default function TopBar({
           )}
         </div>
 
-        {/* Avatar */}
         <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
           <AvatarFallback>{initials}</AvatarFallback>
         </div>
