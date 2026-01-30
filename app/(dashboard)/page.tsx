@@ -1,10 +1,14 @@
-// app/(dashboard)/page.tsx
 import { redirect } from "next/navigation";
 
 export default function DashboardPage() {
-  // Fallback redirect for local development/safety
+  // Base44 style: explicit redirect to the primary functional tab
   redirect("/client/payments");
 
-  // We return a fragment to give the compiler a "node" to attach to
-  return <></>;
+  // We add an actual return element so the compiler 
+  // generates the manifest file properly.
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <p>Redirecting to payments...</p>
+    </div>
+  );
 }
