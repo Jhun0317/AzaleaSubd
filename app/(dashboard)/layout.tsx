@@ -1,8 +1,14 @@
 // app/(dashboard)/layout.tsx
-return (
-  <Providers>
-    <DashboardShell isAdmin={user.role === "admin"}>
-      {children} {/* This renders the HOA content from your screenshot */}
-    </DashboardShell>
-  </Providers>
-);
+import Providers from "../providers";
+import DashboardShell from "@/components/ui/DashboardShell";
+// ... (ensure your auth logic is here)
+
+export default async function DashboardLayout({ children }) {
+  return (
+    <Providers>
+      <DashboardShell isAdmin={user.role === "admin"}>
+        {children} 
+      </DashboardShell>
+    </Providers>
+  );
+}
