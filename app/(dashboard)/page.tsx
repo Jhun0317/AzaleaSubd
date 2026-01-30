@@ -24,7 +24,13 @@ export default function DashboardPage() {
         <div className="lg:col-span-2 space-y-8">
           <QuickActions />
           
-        
+          <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="font-bold text-slate-800">Recent Announcements</h3>
+              <button className="text-emerald-600 text-sm font-semibold flex items-center gap-1 hover:underline">
+                View All <ChevronRight size={14}/>
+              </button>
+            </div>
             
             <div className="space-y-4">
               <div className="text-center py-10 text-slate-400 italic text-sm border-2 border-dashed border-slate-50 rounded-2xl">
@@ -55,10 +61,9 @@ export default function DashboardPage() {
   );
 }
 
-// Sub-components (Helpers)
 function StatCard({ label, value, icon }: { label: string, value: string, icon: any }) {
   return (
-    <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center justify-between transition-transform hover:scale-[1.02]">
+    <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center justify-between">
       <div>
         <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
         <p className="text-3xl font-black text-slate-800">{value}</p>
