@@ -23,21 +23,31 @@ const menuItems = [
   { name: "Dashboard", icon: Home, href: routes.dashboard },
   { name: "Payments", icon: CreditCard, href: routes.payments },
   { name: "Announcements", icon: Bell, href: routes.announcements },
-  { name: 'Events', icon: Calendar, href: '/dashboard/events' },
-  { name: 'Documents', icon: FileText, href: '/dashboard/documents' },
-  { name: 'Messages', icon: MessageSquare, href: '/dashboard/messages' },
-  { name: 'Polls', icon: Vote, href: '/dashboard/polls' },
-  { name: 'Profile', icon: Users, href: '/dashboard/profile' },
+  { name: "Events", icon: Calendar, href: "/dashboard/events" },
+  { name: "Documents", icon: FileText, href: "/dashboard/documents" },
+  { name: "Messages", icon: MessageSquare, href: "/dashboard/messages" },
+  { name: "Polls", icon: Vote, href: "/dashboard/polls" },
+  { name: "Profile", icon: Users, href: "/dashboard/profile" }
 ];
 
 const adminItems = [
-  { name: 'Admin Dashboard', icon: BarChart3, href: '/admin/dashboard' },
-  { name: 'Manage Residents', icon: Users, href: '/admin/residents' },
-  { name: 'Settings', icon: Settings, href: '/admin/settings' },
+  { name: "Admin Dashboard", icon: BarChart3, href: "/admin/dashboard" },
+  { name: "Manage Residents", icon: Users, href: "/admin/residents" },
+  { name: "Settings", icon: Settings, href: "/admin/settings" }
 ];
 
-export default function Sidebar({ isOpen, onClose, isAdmin }) {
-  const pathname = usePathname();
+type SidebarProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  isAdmin?: boolean;
+};
+
+export default function Sidebar({
+  isOpen,
+  onClose,
+  isAdmin
+}: SidebarProps) {
+  const pathname = usePathname() ?? '';
 
   return (
     <>
@@ -50,8 +60,8 @@ export default function Sidebar({ isOpen, onClose, isAdmin }) {
 
       <aside
         className={cn(
-          'fixed top-0 left-0 z-50 h-full w-72 bg-white border-r border-slate-200 transition-transform lg:translate-x-0 lg:static',
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+          "fixed top-0 left-0 z-50 h-full w-72 bg-white border-r border-slate-200 transition-transform lg:translate-x-0 lg:static",
+          isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         <div className="flex flex-col h-full">
@@ -64,22 +74,25 @@ export default function Sidebar({ isOpen, onClose, isAdmin }) {
 
           <nav className="flex-1 p-4 space-y-1">
             {menuItems.map(item => {
-             const active = pathname.startsWith(item.href);
-           return (
+              const active = pathname.startsWith(item.href);
+
+              return (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={onClose}
                   className={cn(
-                    'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium',
+                    "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium",
                     active
-                      ? 'bg-emerald-50 text-emerald-700'
-                      : 'text-slate-600 hover:bg-slate-50'
+                      ? "bg-emerald-50 text-emerald-700"
+                      : "text-slate-600 hover:bg-slate-50"
                   )}
                 >
                   <item.icon className="w-5 h-5" />
                   {item.name}
-                  {active && <ChevronRight className="ml-auto w-4 h-4" />}
+                  {active && (
+                    <ChevronRight className="ml-auto w-4 h-4" />
+                  )}
                 </Link>
               );
             })}
@@ -90,6 +103,7 @@ export default function Sidebar({ isOpen, onClose, isAdmin }) {
                 <p className="px-4 text-xs font-semibold text-slate-400">
                   ADMIN TOOLS
                 </p>
+
                 {adminItems.map(item => (
                   <Link
                     key={item.href}

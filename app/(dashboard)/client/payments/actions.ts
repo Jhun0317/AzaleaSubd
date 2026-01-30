@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { redirect } from "next/navigation";
-import { prisma } from "../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function createPayment() {
   if (!process.env.PAYMONGO_SECRET_KEY) {

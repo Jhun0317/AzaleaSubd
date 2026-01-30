@@ -1,5 +1,12 @@
-import PaymentHistory from "@/components/payments/PaymentHistory";
+'use client';
+
+import nextDynamic from "next/dynamic";
 import Link from "next/link";
+
+const PaymentHistory = nextDynamic(
+  () => import("@/components/payments/PaymentHistory"),
+  { ssr: false }
+);
 
 export type Payment = {
   id: number;
@@ -23,7 +30,7 @@ async function getPayments(): Promise<Payment[]> {
 }
 
 export default async function PaymentsPage() {
-  const payments: Payment[] = await getPayments(); // ✅ FIX
+  const payments: Payment[] = await getPayments();
 
   return (
     <div className="space-y-6">

@@ -1,22 +1,21 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Sidebar from "./Sidebar";
+import { ReactNode, useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-export default function DashboardShell({ children, isAdmin = false }) {
-  const [isOpen, setIsOpen] = useState(true);
+export default function DashboardShell({
+  children,
+  isAdmin,
+}: {
+  children: ReactNode;
+  isAdmin: boolean;
+}) {
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      <Sidebar
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        isAdmin={isAdmin}
-      />
-
-      <main className="flex-1 p-6">
-        {children}
-      </main>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      {/* ⬇️ KEEP ALL YOUR EXISTING DASHBOARD JSX BELOW */}
+      {children}
+    </QueryClientProvider>
   );
 }

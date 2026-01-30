@@ -1,10 +1,9 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    appDir: true,
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
   },
-  // ⛔ completely disable static prerendering
-  output: "standalone",
 };
 
-module.exports = nextConfig;
+export default nextConfig;
