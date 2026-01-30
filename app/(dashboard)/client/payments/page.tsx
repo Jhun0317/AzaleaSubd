@@ -52,3 +52,63 @@ function StatCard({ label, value, color }: { label: string, value: string, color
     </div>
   );
 }
+
+import { CreditCard, FileText, MessageSquare, Calendar, ChevronRight } from 'lucide-react';
+
+export default function QuickActions() {
+  const actions = [
+    {
+      title: "Submit Payment",
+      description: "Pay your monthly dues",
+      icon: <CreditCard className="text-emerald-600" size={20} />,
+      color: "bg-emerald-50",
+      link: "/client/payments/new"
+    },
+    {
+      title: "View Documents",
+      description: "Access HOA files",
+      icon: <FileText className="text-blue-600" size={20} />,
+      color: "bg-blue-50",
+      link: "/client/documents"
+    },
+    {
+      title: "Send Message",
+      description: "Contact admin",
+      icon: <MessageSquare className="text-purple-600" size={20} />,
+      color: "bg-purple-50",
+      link: "/client/messages"
+    },
+    {
+      title: "View Events",
+      description: "Check calendar",
+      icon: <Calendar className="text-orange-600" size={20} />,
+      color: "bg-orange-50",
+      link: "/client/events"
+    }
+  ];
+
+  return (
+    <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
+      <h3 className="text-lg font-bold text-slate-800 mb-6">Quick Actions</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {actions.map((action, index) => (
+          <div 
+            key={index}
+            className="group flex items-center justify-between p-4 rounded-2xl border border-slate-50 hover:border-emerald-100 hover:bg-slate-50/50 transition-all cursor-pointer"
+          >
+            <div className="flex items-center gap-4">
+              <div className={`w-12 h-12 ${action.color} rounded-xl flex items-center justify-center transition-transform group-hover:scale-110`}>
+                {action.icon}
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-slate-700">{action.title}</h4>
+                <p className="text-xs text-slate-400">{action.description}</p>
+              </div>
+            </div>
+            <ChevronRight size={16} className="text-slate-300 group-hover:text-emerald-500 transition-colors" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
