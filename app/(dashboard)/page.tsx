@@ -3,7 +3,7 @@ import { CreditCard, FileText, MessageSquare, Calendar, ChevronRight, Bell, Info
 export default function DashboardPage() {
   return (
     <div className="space-y-8">
-      {/* WELCOME BANNER - This is the green header */}
+      {/* WELCOME BANNER */}
       <div className="relative overflow-hidden bg-[#10b981] rounded-[2rem] p-10 text-white shadow-lg shadow-emerald-500/10">
         <div className="relative z-10">
           <h1 className="text-3xl font-bold mb-2">Welcome back, Carsido! 👋</h1>
@@ -19,15 +19,15 @@ export default function DashboardPage() {
         <StatCard label="Payments Made" value="0" icon={<CreditCard className="text-rose-500" />} />
       </div>
 
-      {/* MAIN CONTENT GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
           <QuickActions />
           
+          {/* ANNOUNCEMENTS SECTION */}
           <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <h3 className="font-bold text-slate-800">Recent Announcements</h3>
-              <button className="text-emerald-600 text-sm font-semibold flex items-center gap-1">
+              <button className="text-emerald-600 text-sm font-semibold flex items-center gap-1 hover:underline">
                 View All <ChevronRight size={14}/>
               </button>
             </div>
@@ -49,15 +49,15 @@ export default function DashboardPage() {
           </div>
         </div>
         
-        {/* RIGHT SIDEBAR (Payment Status) */}
+        {/* PAYMENT STATUS CARD */}
         <div className="space-y-8">
            <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
              <div className="flex justify-between items-center mb-6">
                <h3 className="font-bold text-slate-800">Payment Status</h3>
                <span className="text-emerald-600 text-xs font-bold cursor-pointer hover:underline">View History</span>
              </div>
-             <div className="p-4 bg-emerald-50/50 rounded-2xl mb-6 border border-emerald-100">
-                <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Current Balance</p>
+             <div className="p-5 bg-emerald-50/50 rounded-2xl mb-6 border border-emerald-100">
+                <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider mb-1">Current Balance</p>
                 <p className="text-3xl font-black text-emerald-700">₱0.00</p>
              </div>
              <button className="w-full py-4 bg-[#10b981] text-white rounded-2xl font-bold hover:bg-emerald-600 transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
@@ -70,7 +70,7 @@ export default function DashboardPage() {
   );
 }
 
-// Helper Components (Keep these at the bottom)
+// Sub-components
 function StatCard({ label, value, icon }: { label: string, value: string, icon: any }) {
   return (
     <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center justify-between transition-transform hover:scale-[1.02]">
