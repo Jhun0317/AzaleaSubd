@@ -1,8 +1,8 @@
 export default function DashboardPage() {
   return (
-    <div className="p-20 text-center">
-      <h1 className="text-4xl font-bold">Dashboard Reset Successful</h1>
-      <p className="mt-4 text-gray-500">Everything is empty. We can start building from here.</p>
+    <div className="p-8">
+      <h1 className="text-2xl font-bold text-slate-800">Dashboard Content</h1>
+      <p className="text-slate-500">The duplicate menu should now be gone.</p>
     </div>
   );
 }
