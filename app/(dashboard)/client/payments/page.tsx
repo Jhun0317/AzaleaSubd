@@ -1,3 +1,6 @@
+import { CreditCard, FileText, MessageSquare, Calendar, ChevronRight } from 'lucide-react';
+
+// 1. THE MAIN PAGE (Only one export default allowed!)
 export default function DashboardPage() {
   return (
     <div className="space-y-8">
@@ -20,17 +23,22 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
-           {/* Quick Actions and Recent Announcements components would go here */}
+           {/* REPLACED THE PLACEHOLDER WITH THE ACTUAL QUICKACTIONS COMPONENT */}
+           <QuickActions />
+           
            <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
-             <h3 className="font-bold text-slate-800 mb-6">Quick Actions</h3>
-             {/* Action buttons... */}
+             <h3 className="font-bold text-slate-800 mb-6">Recent Announcements</h3>
+             <p className="text-slate-400 text-sm italic">No new announcements today.</p>
            </div>
         </div>
         
         <div className="space-y-8">
-           {/* Payment Status and Upcoming Events sidebars */}
            <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
              <h3 className="font-bold text-slate-800 mb-4">Payment Status</h3>
+             <div className="mb-4 p-4 bg-emerald-50 rounded-2xl">
+                <p className="text-xs text-emerald-600 font-bold uppercase">Current Balance</p>
+                <p className="text-2xl font-black text-emerald-700">₱0.00</p>
+             </div>
              <button className="w-full py-3 bg-[#10b981] text-white rounded-xl font-bold hover:bg-emerald-600 transition-colors">
                Pay Now
              </button>
@@ -41,6 +49,7 @@ export default function DashboardPage() {
   );
 }
 
+// 2. STAT CARD COMPONENT (Internal helper)
 function StatCard({ label, value, color }: { label: string, value: string, color: string }) {
   return (
     <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center justify-between">
@@ -53,9 +62,8 @@ function StatCard({ label, value, color }: { label: string, value: string, color
   );
 }
 
-import { CreditCard, FileText, MessageSquare, Calendar, ChevronRight } from 'lucide-react';
-
-export default function QuickActions() {
+// 3. QUICK ACTIONS COMPONENT (Removed 'export default')
+function QuickActions() {
   const actions = [
     {
       title: "Submit Payment",
