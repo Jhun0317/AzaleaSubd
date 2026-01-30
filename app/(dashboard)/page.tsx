@@ -3,7 +3,7 @@ import { CreditCard, FileText, MessageSquare, Calendar, ChevronRight, Bell, Info
 export default function DashboardPage() {
   return (
     <div className="space-y-8">
-      {/* WELCOME BANNER */}
+      {/* 1. WELCOME BANNER */}
       <div className="relative overflow-hidden bg-[#10b981] rounded-[2rem] p-10 text-white shadow-lg shadow-emerald-500/10">
         <div className="relative z-10">
           <h1 className="text-3xl font-bold mb-2">Welcome back, Carsido! 👋</h1>
@@ -11,7 +11,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* STAT CARDS */}
+      {/* 2. STAT CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <StatCard label="Unread Messages" value="0" icon={<MessageSquare className="text-orange-500" />} />
         <StatCard label="Upcoming Events" value="0" icon={<Calendar className="text-blue-500" />} />
@@ -19,11 +19,11 @@ export default function DashboardPage() {
         <StatCard label="Payments Made" value="0" icon={<CreditCard className="text-rose-500" />} />
       </div>
 
+      {/* 3. MAIN CONTENT GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
           <QuickActions />
           
-          {/* ANNOUNCEMENTS SECTION */}
           <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <h3 className="font-bold text-slate-800">Recent Announcements</h3>
@@ -33,23 +33,14 @@ export default function DashboardPage() {
             </div>
             
             <div className="space-y-4">
-              <AnnouncementItem 
-                title="Water Service Interruption Notice" 
-                date="Jan 16, 2026" 
-                type="emergency" 
-                desc="Please be advised that there will be a scheduled water service interruption..." 
-              />
-              <AnnouncementItem 
-                title="New Parking Guidelines" 
-                date="Jan 16, 2026" 
-                type="info" 
-                desc="Starting February 1, 2025, all residents must display their parking stickers..." 
-              />
+              <div className="text-center py-10 text-slate-400 italic text-sm border-2 border-dashed border-slate-50 rounded-2xl">
+                No new announcements today.
+              </div>
             </div>
           </div>
         </div>
         
-        {/* PAYMENT STATUS CARD */}
+        {/* 4. PAYMENT STATUS CARD */}
         <div className="space-y-8">
            <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
              <div className="flex justify-between items-center mb-6">
@@ -70,7 +61,7 @@ export default function DashboardPage() {
   );
 }
 
-// Sub-components
+// Sub-components (Helpers)
 function StatCard({ label, value, icon }: { label: string, value: string, icon: any }) {
   return (
     <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center justify-between transition-transform hover:scale-[1.02]">
@@ -78,25 +69,7 @@ function StatCard({ label, value, icon }: { label: string, value: string, icon: 
         <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">{label}</p>
         <p className="text-3xl font-black text-slate-800">{value}</p>
       </div>
-      <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center">
-        {icon}
-      </div>
-    </div>
-  );
-}
-
-function AnnouncementItem({ title, date, type, desc }: any) {
-  const isEmergency = type === 'emergency';
-  return (
-    <div className={`p-5 rounded-2xl border transition-colors ${isEmergency ? 'bg-rose-50/30 border-rose-100 hover:bg-rose-50' : 'bg-blue-50/30 border-blue-100 hover:bg-blue-50'}`}>
-      <div className="flex gap-4">
-        <div className={`mt-1 ${isEmergency ? 'text-rose-500' : 'text-blue-500'}`}><Info size={18}/></div>
-        <div>
-          <h4 className="text-sm font-bold text-slate-800">{title}</h4>
-          <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">{desc}</p>
-          <p className="text-[10px] text-slate-400 mt-2 font-medium tracking-tight uppercase">{date}</p>
-        </div>
-      </div>
+      <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center">{icon}</div>
     </div>
   );
 }
