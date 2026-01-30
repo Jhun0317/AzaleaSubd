@@ -24,13 +24,7 @@ export default function DashboardPage() {
         <div className="lg:col-span-2 space-y-8">
           <QuickActions />
           
-          <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="font-bold text-slate-800">Recent Announcements</h3>
-              <button className="text-emerald-600 text-sm font-semibold flex items-center gap-1 hover:underline">
-                View All <ChevronRight size={14}/>
-              </button>
-            </div>
+        
             
             <div className="space-y-4">
               <div className="text-center py-10 text-slate-400 italic text-sm border-2 border-dashed border-slate-50 rounded-2xl">
