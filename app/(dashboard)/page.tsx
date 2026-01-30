@@ -23,8 +23,11 @@ export default function DashboardPage() {
         <div className="lg:col-span-2 space-y-8">
           <QuickActions />
           
-          {/* RECENT ANNOUNCEMENTS SECTION */}
-       
+          <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="font-bold text-slate-800">Recent Announcements</h3>
+              <button className="text-emerald-600 text-sm font-semibold flex items-center gap-1">View All <ChevronRight size={14}/></button>
+            </div>
             
             <div className="space-y-4">
               <AnnouncementItem 
@@ -44,22 +47,14 @@ export default function DashboardPage() {
         </div>
         
         <div className="space-y-8">
-           {/* PAYMENT STATUS CARD */}
            <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
              <div className="flex justify-between items-center mb-6">
                <h3 className="font-bold text-slate-800">Payment Status</h3>
                <span className="text-emerald-600 text-xs font-bold cursor-pointer">View History</span>
              </div>
-             <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-2xl mb-6">
-                <div className="p-3 bg-white rounded-xl shadow-sm"><CreditCard size={20} className="text-slate-600"/></div>
-                <div>
-                  <p className="text-xs text-slate-400 font-medium">January 2026 Dues</p>
-                  <p className="text-sm font-bold text-slate-700">Unpaid</p>
-                </div>
-             </div>
-             <div className="flex justify-between items-end mb-6">
-                <span className="text-xs text-slate-400">Monthly Amount</span>
-                <span className="text-xl font-black text-slate-800">₱300</span>
+             <div className="p-4 bg-emerald-50/50 rounded-2xl mb-6 border border-emerald-100">
+                <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Current Balance</p>
+                <p className="text-3xl font-black text-emerald-700">₱0.00</p>
              </div>
              <button className="w-full py-4 bg-[#10b981] text-white rounded-2xl font-bold hover:bg-emerald-600 transition-all flex items-center justify-center gap-2">
                <CreditCard size={18}/> Pay Now
@@ -71,7 +66,6 @@ export default function DashboardPage() {
   );
 }
 
-// Helper Components
 function StatCard({ label, value, icon }: { label: string, value: string, icon: any }) {
   return (
     <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center justify-between">
