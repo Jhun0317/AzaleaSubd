@@ -36,7 +36,8 @@ model Announcement {
   id        String   @id @default(cuid())
   title     String
   content   String
-  isPinned  Boolean  @default(false)
+  priority  String   @default("normal") // Add this
+  isPinned  Boolean  @default(false)    // Add this
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
