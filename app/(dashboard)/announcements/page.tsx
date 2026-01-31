@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import { Megaphone, Pin } from 'lucide-react';
 
 export default async function AnnouncementsPage() {
+  // 1. Fetch data
   const announcements = await prisma.announcement.findMany({
     orderBy: [
       { isPinned: "desc" },
@@ -9,34 +11,56 @@ export default async function AnnouncementsPage() {
   });
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-xl font-bold">Announcements</h1>
-
-      <div className="space-y-3">
-        {announcements.map((a) => (
-          <div
-            key={a.id}
-            className="bg-white border rounded-xl p-4"
-          >
-            <div className="flex items-center gap-2">
-              {a.isPinned && (
-                <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded">
-                  PINNED
-                </span>
-              )}
-              <h3 className="font-semibold">{a.title}</h3>
-            </div>
-
-            <p className="text-sm text-slate-600 mt-2">
-              {a.content}
-            </p>
-
-            <p className="text-xs text-slate-400 mt-3">
-              {new Date(a.createdAt).toLocaleDateString()}
-            </p>
-          </div>
-        ))}
+    <div className="p-8 max-w-5xl mx-auto space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-black text-slate-800">Announcements</h1>
+          <p className="text-slate-500 text-sm">Stay updated with the latest community news.</p>
+        </div>
+        <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center">
+          <Megaphone size={24} />
+        </div>
       </div>
+
+      {/* 2. Check if empty */}
+      {announcements.length === 0 ? (
+        <div className="bg-white border-2 border-dashed border-slate-200 rounded-[2rem] p-20 text-center">
+          <p className="text-slate-400 font-medium">No announcements yet. Check back later!</p>
+        </div>
+      ) : (
+        <div className="grid gap-4">
+          {announcements.map((a) => (
+            <div
+              key={a.id}
+              className={`bg-white border rounded-[1.5rem] p-6 transition-all hover:shadow-md ${
+                a.isPinned ? 'border-emerald-200 bg-emerald-50/10' : 'border-slate-100'
+              }`}
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  {a.isPinned && (
+                    <div className="flex items-center gap-1 bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 rounded-md tracking-widest">
+                      <Pin size={10} /> PINNED
+                    </div>
+                  )}
+                  <h3 className="font-bold text-lg text-slate-800">{a.title}</h3>
+                </div>
+                <span className="text-xs font-bold text-slate-400 uppercase">
+                  {new Date(a.createdAt).toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                  })}
+                </span>
+              </div>
+
+              <p className="text-slate-600 mt-3 leading-relaxed">
+                {a.content}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
