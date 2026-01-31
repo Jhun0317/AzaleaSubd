@@ -35,13 +35,14 @@ model User {
 
 model Profile {
   id          String   @id @default(cuid())
-  bio         String?
-  avatarUrl   String?
-  phoneNumber String?
-  userId      String   @unique // This must be unique for a 1-to-1 relation
+  fullName    String   // Changed from bio/name to match code
+  lotNumber   String   // Added to match code
+  phone       String   // Changed from phoneNumber to match code
+  userId      String   @unique
   user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
-
 model Announcement {
   id        String   @id @default(cuid())
   title     String
