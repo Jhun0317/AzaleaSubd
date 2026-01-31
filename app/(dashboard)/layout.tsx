@@ -22,12 +22,14 @@ export default function DashboardLayout({
       )}
 
       {/* 2. SIDEBAR: Fixed width on desktop, sliding on mobile */}
+{/* 2. SIDEBAR CONTAINER */}
       <div className={`
         fixed inset-y-0 left-0 z-50 w-64 bg-white transform transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
- <Sidebar onItemClick={() => setIsSidebarOpen(false)} />
+        lg:relative lg:translate-x-0 lg:flex-shrink-0
       `}>
-        <Sidebar /> 
+        {/* ONLY ONE SIDEBAR CALL HERE, WITH THE PROP */}
+        <Sidebar onItemClick={() => setIsSidebarOpen(false)} /> 
       </div>
 
       {/* 3. MAIN CONTENT: Added a mobile header for the toggle button */}
