@@ -1,5 +1,15 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 model GlobalSettings {
-  id                Int      @id @default(1)
+  // We changed id to String "system" to make it easier to find in code
+  id                String   @id @default("system")
   adminGcashNumber  String   @default("09000000000")
   adminGcashName    String   @default("Admin Name")
   monthlyDuesAmount Float    @default(300.0)
@@ -12,13 +22,12 @@ model Event {
   description String
   date        DateTime
   location    String
-  category    String   // e.g., "Meeting", "Social", "Maintenance"
+  category    String   
   createdAt   DateTime @default(now())
 }
 
 model User {
   id            String    @id @default(cuid())
   name          String?
-  paymentStatus String    @default("UNPAID") // UNPAID, PENDING, or PAID
-  // ... other fields
+  paymentStatus String    @default("UNPAID") 
 }
