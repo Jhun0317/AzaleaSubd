@@ -1,11 +1,13 @@
 import "./globals.css";
-import QueryProvider from "./providers/QueryProvider";
+import QueryProvider from "./providers/QueryProvider"; // Make sure this line exists!
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className="antialiased">
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          {children}
+        </QueryProvider>
       </body>
     </html>
   );
