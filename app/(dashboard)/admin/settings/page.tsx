@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { CreditCard, Settings2, Megaphone, FileText, CheckCircle2, Save, Plus } from "lucide-react";
+// Import the action we'll create in the next step
+import { updateSystemSettings } from "@/app/actions/settings"; 
 
 export default function AdminSettings() {
   const [activeTab, setActiveTab] = useState("payments");
@@ -54,19 +56,29 @@ export default function AdminSettings() {
           </div>
         )}
 
-        {/* DUES TAB */}
+        {/* DUES TAB - Now connected to Server Action */}
         {activeTab === "dues" && (
-          <div className="space-y-8">
+          <form action={updateSystemSettings} className="space-y-8">
             <section>
               <h3 className="font-bold text-slate-800 mb-4">Dues Configuration</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-slate-500 uppercase">Monthly Dues Amount (₱)</label>
-                  <input type="number" defaultValue="300" className="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl" />
+                  <input 
+                    name="monthlyDues" 
+                    type="number" 
+                    defaultValue="300" 
+                    className="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl" 
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-slate-500 uppercase">Due Day (Day of Month)</label>
-                  <input type="number" defaultValue="15" className="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl" />
+                  <input 
+                    name="dueDay" 
+                    type="number" 
+                    defaultValue="15" 
+                    className="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl" 
+                  />
                 </div>
               </div>
             </section>
@@ -76,21 +88,34 @@ export default function AdminSettings() {
               <div className="space-y-4">
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-slate-500 uppercase">GCash Number</label>
-                  <input type="text" defaultValue="0912049237" className="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl font-mono" />
+                  <input 
+                    name="gcashNumber" 
+                    type="text" 
+                    defaultValue="0912049237" 
+                    className="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl font-mono" 
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-slate-500 uppercase">Bank Details</label>
-                  <textarea rows={3} defaultValue="BDO Savings Account\nAccount Name: HOA Association\nAccount Number: 1234-5678-9012" className="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl" />
+                  <textarea 
+                    name="bankDetails" 
+                    rows={3} 
+                    defaultValue={"BDO Savings Account\nAccount Name: HOA Association\nAccount Number: 1234-5678-9012"} 
+                    className="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl" 
+                  />
                 </div>
               </div>
             </section>
 
             <div className="flex justify-end pt-4">
-              <button className="flex items-center gap-2 bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold text-sm">
+              <button 
+                type="submit" 
+                className="flex items-center gap-2 bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-700 transition-colors"
+              >
                 <Save size={18} /> Save Settings
               </button>
             </div>
-          </div>
+          </form>
         )}
 
         {/* ANNOUNCE TAB */}
