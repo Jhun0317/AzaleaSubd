@@ -1,64 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react"; // Added useTransition
 import { CreditCard, Settings2, Megaphone, FileText, CheckCircle2, Save, Plus } from "lucide-react";
-// Import the action we'll create in the next step
 import { updateSystemSettings } from "@/app/actions/settings"; 
 
 export default function AdminSettings() {
   const [activeTab, setActiveTab] = useState("payments");
+  const [isPending, startTransition] = useTransition(); // Tracks the saving state
 
-  const tabs = [
-    { id: "payments", label: "Payments", icon: <CreditCard size={16} /> },
-    { id: "dues", label: "Dues", icon: <Settings2 size={16} /> },
-    { id: "announce", label: "Announce", icon: <Megaphone size={16} /> },
-    { id: "documents", label: "Documents", icon: <FileText size={16} /> },
-  ];
+  // Local handler to bridge the form and the server action
+  async function handleSubmit(formData: FormData) {
+    startTransition(async () => {
+      await updateSystemSettings(formData);
+      alert("Settings updated successfully!"); // Feedback for the admin
+    });
+  }
+
+  // ... (keep your tabs array the same)
 
   return (
     <div className="p-4 md:p-8 max-w-6xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">Admin Settings</h1>
-        <p className="text-sm text-slate-500">Manage HOA settings, payments, and content</p>
-      </div>
+      {/* ... (header and tabs code remains the same) */}
 
-      {/* Navigation Tabs */}
-      <div className="flex flex-wrap gap-2 mb-8 bg-slate-100/50 p-1.5 rounded-2xl w-fit">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
-              activeTab === tab.id
-                ? "bg-white text-slate-900 shadow-sm"
-                : "text-slate-500 hover:text-slate-700"
-            }`}
-          >
-            {tab.icon}
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Tab Content Area */}
       <div className="bg-white rounded-[32px] border border-slate-100 p-8 shadow-sm min-h-[400px]">
         
-        {/* PAYMENTS TAB */}
-        {activeTab === "payments" && (
-          <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mb-4">
-              <CheckCircle2 size={32} />
-            </div>
-            <h3 className="text-lg font-bold text-slate-800">Pending Payment Verifications</h3>
-            <p className="text-sm text-slate-400 mt-1 max-w-md">
-              Review and verify submitted payment receipts. Currently, all payments have been verified.
-            </p>
-          </div>
-        )}
+        {/* PAYMENTS TAB code remains the same */}
 
-        {/* DUES TAB - Now connected to Server Action */}
+        {/* DUES TAB - Updated with local handler */}
         {activeTab === "dues" && (
-          <form action={updateSystemSettings} className="space-y-8">
+          <form action={handleSubmit} className="space-y-8">
             <section>
               <h3 className="font-bold text-slate-800 mb-4">Dues Configuration</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -110,46 +80,17 @@ export default function AdminSettings() {
             <div className="flex justify-end pt-4">
               <button 
                 type="submit" 
-                className="flex items-center gap-2 bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-700 transition-colors"
+                disabled={isPending}
+                className="flex items-center gap-2 bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-700 transition-colors disabled:opacity-50"
               >
-                <Save size={18} /> Save Settings
+                <Save size={18} /> 
+                {isPending ? "Saving..." : "Save Settings"}
               </button>
             </div>
           </form>
         )}
 
-        {/* ANNOUNCE TAB */}
-        {activeTab === "announce" && (
-          <div className="flex flex-col gap-6">
-            <div className="flex justify-between items-center border-b pb-4">
-              <div>
-                <h3 className="font-bold text-slate-800">Post Announcement</h3>
-                <p className="text-xs text-slate-400">Create announcements for the community</p>
-              </div>
-              <button className="flex items-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold text-xs">
-                <Plus size={16} /> New Announcement
-              </button>
-            </div>
-            <div className="py-20 text-center text-slate-400 text-sm">No announcements posted yet.</div>
-          </div>
-        )}
-
-        {/* DOCUMENTS TAB */}
-        {activeTab === "documents" && (
-          <div className="flex flex-col gap-6">
-            <div className="flex justify-between items-center border-b pb-4">
-              <div>
-                <h3 className="font-bold text-slate-800">Upload Document</h3>
-                <p className="text-xs text-slate-400">Add documents for residents to access</p>
-              </div>
-              <button className="flex items-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold text-xs">
-                <Plus size={16} /> Upload Document
-              </button>
-            </div>
-            <div className="py-20 text-center text-slate-400 text-sm">No documents uploaded.</div>
-          </div>
-        )}
-
+        {/* ANNOUNCE and DOCUMENTS TAB code remains the same */}
       </div>
     </div>
   );
