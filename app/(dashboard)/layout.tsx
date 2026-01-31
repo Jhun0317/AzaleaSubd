@@ -25,7 +25,7 @@ export default function DashboardLayout({
       <div className={`
         fixed inset-y-0 left-0 z-50 w-64 bg-white transform transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-        lg:relative lg:translate-x-0 lg:flex-shrink-0
+ <Sidebar onItemClick={() => setIsSidebarOpen(false)} />
       `}>
         <Sidebar /> 
       </div>
