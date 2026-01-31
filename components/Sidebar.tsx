@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, CreditCard, Megaphone, Calendar, FileText, User, HeadphonesIcon, ShieldCheck } from 'lucide-react';
+import { LayoutDashboard, CreditCard, Megaphone, Calendar, FileText, User, HeadphonesIcon, ShieldCheck, Settings } from 'lucide-react';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -18,10 +18,15 @@ export default function Sidebar() {
     { icon: <User size={18} />, label: 'Profile', href: '/profile' },
   ];
 
-  const adminItems = [
-    { icon: <User size={18} />, label: 'Manage Residents', href: '/admin/residents' },
-    { icon: <CreditCard size={18} />, label: 'Review Payments', href: '/admin/payments' },
-  ];
+const adminItems = [
+
+  { icon: <User size={18} />, label: 'Manage Residents', href: '/admin/residents' },
+
+  { icon: <CreditCard size={18} />, label: 'Review Payments', href: '/admin/payments' },
+
+  { icon: <Settings size={18} />, label: 'Settings', href: '/admin/settings' }, // New line
+
+];
 
   return (
     <aside className="w-64 bg-white h-screen border-r border-slate-100 flex flex-col p-6 sticky top-0 z-[100]">
