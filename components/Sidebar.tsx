@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LayoutDashboard, CreditCard, Megaphone, Calendar, FileText, User, HeadphonesIcon, ShieldCheck, Settings } from 'lucide-react';
 
-// UPDATED: Added props to receive the close function from layout.tsx
+// Define the props once
 interface SidebarProps {
   onItemClick?: () => void;
 }
@@ -28,7 +28,7 @@ export default function Sidebar({ onItemClick }: SidebarProps) {
   ];
 
   return (
-    // UPDATED: Changed w-64 h-screen to h-full w-full because layout.tsx now handles the width/height
+    // Set to full width/height so the Layout container can control the size
     <aside className="w-full h-full bg-white border-r border-slate-100 flex flex-col p-6 overflow-y-auto">
       <div className="flex items-center gap-3 mb-10 px-2">
         <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-white font-bold">H</div>
@@ -45,7 +45,7 @@ export default function Sidebar({ onItemClick }: SidebarProps) {
             <Link 
               key={item.href} 
               href={item.href}
-              onClick={onItemClick} // UPDATED: Closes menu on mobile click
+              onClick={onItemClick} // Triggers the menu to close on mobile
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
                 isActive ? 'bg-emerald-50 text-emerald-600 font-bold' : 'text-slate-500 hover:bg-slate-50'
               }`}
@@ -66,7 +66,7 @@ export default function Sidebar({ onItemClick }: SidebarProps) {
               <Link 
                 key={item.href} 
                 href={item.href}
-                onClick={onItemClick} // UPDATED: Closes menu on mobile click
+                onClick={onItemClick} // Triggers the menu to close on mobile
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
                   pathname === item.href ? 'bg-slate-800 text-white font-bold' : 'text-slate-500 hover:bg-slate-50'
                 }`}
