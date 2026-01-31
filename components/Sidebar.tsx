@@ -39,29 +39,29 @@ export default function Sidebar() {
       </div>
 
       {/* NAV LINKS */}
-      <nav className="flex-1 space-y-1">
-        {menuItems.map((item) => {
-          // This ensures "/" only matches exactly, but others can match sub-paths
-          const isActive = item.href === '/' 
-            ? pathname === '/' 
-            : pathname.startsWith(item.href);
+<nav className="flex-1 space-y-1">
+  {menuItems.map((item) => {
+    // Check if pathname exists and if the link is active
+    const isActive = item.href === '/' 
+      ? pathname === '/' 
+      : pathname?.startsWith(item.href) ?? false;
 
-          return (
-            <Link 
-              key={item.href} 
-              href={item.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-                isActive 
-                  ? 'bg-emerald-50 text-emerald-600 font-bold' 
-                  : 'text-slate-500 hover:bg-slate-50'
-              }`}
-            >
-              {item.icon}
-              <span className="text-sm">{item.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
+    return (
+      <Link 
+        key={item.href} 
+        href={item.href}
+        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+          isActive 
+            ? 'bg-emerald-50 text-emerald-600 font-bold' 
+            : 'text-slate-500 hover:bg-slate-50'
+        }`}
+      >
+        {item.icon}
+        <span className="text-sm">{item.label}</span>
+      </Link>
+    );
+  })}
+</nav>
 
       {/* HELP CARD */}
       <div className="mt-auto bg-slate-50 p-4 rounded-2xl">
