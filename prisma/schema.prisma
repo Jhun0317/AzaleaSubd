@@ -15,3 +15,10 @@ model Event {
   category    String   // e.g., "Meeting", "Social", "Maintenance"
   createdAt   DateTime @default(now())
 }
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  paymentStatus String    @default("UNPAID") // UNPAID, PENDING, or PAID
+  // ... other fields
+}
