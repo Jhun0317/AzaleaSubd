@@ -53,10 +53,12 @@ model Payment {
 }
 
 model Document {
-  id        String   @id @default(cuid())
-  title     String
-  fileUrl   String
-  category  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  title      String
+  fileUrl    String
+  fileType   String   // Add this
+  category   String?
+  uploadedBy String   // Add this
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
