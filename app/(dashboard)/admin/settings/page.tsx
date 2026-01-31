@@ -1,18 +1,28 @@
 "use client";
 import { useState } from 'react';
 import { Save, Smartphone, Info } from 'lucide-react';
+// Import the action we just talked about
+import { updateGcashSettings } from "@/app/actions/settings-actions";
 
 export default function AdminSettings() {
   const [gcashNumber, setGcashNumber] = useState("09123456789");
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {
+    if (!gcashNumber) return alert("Please enter a number");
+    
     setIsSaving(true);
-    // Simulation of saving
-    setTimeout(() => {
-      setIsSaving(false);
-      alert("Settings updated successfully!");
-    }, 1000);
+    
+    // This sends the data to your database
+    const result = await updateGcashSettings(gcashNumber);
+    
+    if (result.success) {
+      alert("GCash details updated for the whole community! 🎉");
+    } else {
+      alert("Error: Database not synced. Run 'npx prisma db push' locally.");
+    }
+    
+    setIsSaving(false);
   };
 
   return (
@@ -23,7 +33,6 @@ export default function AdminSettings() {
       </div>
 
       <div className="grid gap-6">
-        {/* PAYMENT CONFIGURATION */}
         <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-6">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
@@ -39,7 +48,7 @@ export default function AdminSettings() {
             <input 
               type="text" 
               value={gcashNumber}
-              onChange={(e) => setGcashNumber(e.target.value)} // FIXED HERE
+              onChange={(e) => setGcashNumber(e.target.value)}
               className="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500/20 font-mono text-lg"
             />
             <p className="mt-2 text-[11px] text-slate-400 flex items-center gap-1 px-1">
@@ -48,7 +57,6 @@ export default function AdminSettings() {
           </div>
         </div>
 
-        {/* SAVE BUTTON */}
         <div className="flex justify-end">
           <button 
             onClick={handleSave}
