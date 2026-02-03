@@ -5,7 +5,6 @@ export default async function AnnouncementsPage() {
   // 1. Fetch data
   const announcements = await prisma.announcement.findMany({
     orderBy: [
-      { isPinned: "desc" },
       { createdAt: "desc" },
     ],
   });
