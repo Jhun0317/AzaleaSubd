@@ -7,13 +7,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model GlobalSettings {
-  // We changed id to String "system" to make it easier to find in code
-  id                String   @id @default("system")
-  adminGcashNumber  String   @default("09000000000")
-  adminGcashName    String   @default("Admin Name")
-  monthlyDuesAmount Float    @default(300.0)
-  updatedAt         DateTime @updatedAt
+// 1. Settings (Keep SystemSettings as primary)
+model SystemSettings {
+  id           Int      @id @default(1)
+  monthlyDues  Float    @default(300)
+  dueDay       Int      @default(15)
+  gcashNumber  String   @default("0912049237")
+  bankDetails  String?  @db.Text
+  updatedAt    DateTime @updatedAt
+}
+
+// 2. Residents & Profiles
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phase     String   // Used for the Admin Phase Report
+  profile   Profile? 
+  payments  PaymentSubmission[] 
+}
+
+model Profile {
+  id          String   @id @default(cuid())
+  fullName    String
+  lotNumber   String
+  phone       String
+  userId      Int      @unique
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// 3. Payments (Using PaymentSubmission for GCash Ref numbers)
+model PaymentSubmission {
+  id              Int      @id @default(autoincrement())
+  referenceNumber String
+  status          String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  amount          Float
+  userId          Int      @default(1)
+  user            User     @relation(fields: [userId], references: [id])
+  createdAt       DateTime @default(now())
+}
+
+// 4. CMS Features
+model Announcement {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  priority  String   @default("normal")
+  isPinned  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Event {
@@ -26,70 +69,13 @@ model Event {
   createdAt   DateTime @default(now())
 }
 
-model User {
-  id       String   @id @default(cuid())
-  email    String   @unique
-  name     String?
-  profile  Profile? // This field creates the link in the User model
-}
-
-model Profile {
-  id          String   @id @default(cuid())
-  fullName    String   // Changed from bio/name to match code
-  lotNumber   String   // Added to match code
-  phone       String   // Changed from phoneNumber to match code
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-model Announcement {
-  id        String   @id @default(cuid())
-  title     String
-  content   String
-  priority  String   @default("normal") // Add this
-  isPinned  Boolean  @default(false)    // Add this
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Payment {
-  id              String    @id @default(cuid())
-  amount          Float
-  status          String    @default("PENDING")
-  description     String
-  userId          String
-  paidAt          DateTime? // Add this (Optional, since it's only set after payment)
-  paymentIntentId String?   // Highly recommended for webhooks
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-}
-
 model Document {
   id         String   @id @default(cuid())
   title      String
   fileUrl    String
-  fileType   String   // Add this
+  fileType   String
   category   String?
-  uploadedBy String   // Add this
+  uploadedBy String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-}
-
-model SystemSettings {
-  id            Int      @id @default(1)
-  monthlyDues   Float    @default(300)
-  dueDay        Int      @default(15)
-  gcashNumber   String   @default("0912049237")
-  bankDetails   String?  @db.Text
-  updatedAt     DateTime @updatedAt
-}
-
-model PaymentSubmission {
-  id              Int      @id @default(autoincrement())
-  referenceNumber String
-  status          String   @default("PENDING")
-  amount          Float
-  userId          Int      @default(1)
-  createdAt       DateTime @default(now())
 }
