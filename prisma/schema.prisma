@@ -86,10 +86,10 @@ model SystemSettings {
 }
 
 model PaymentSubmission {
-  id              Int      @id @default(autoincrecol())
+  id              Int      @id @default(autoincrement())
   referenceNumber String
-  status          String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  status          String   @default("PENDING")
   amount          Float
-  userId          Int      @default(1)         // We'll link this to real users later
+  userId          Int      @default(1)
   createdAt       DateTime @default(now())
 }
