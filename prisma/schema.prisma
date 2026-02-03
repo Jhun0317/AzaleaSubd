@@ -84,3 +84,12 @@ model SystemSettings {
   bankDetails   String?  @db.Text
   updatedAt     DateTime @updatedAt
 }
+
+model PaymentSubmission {
+  id              Int      @id @default(autoincrecol())
+  referenceNumber String
+  status          String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  amount          Float
+  userId          Int      @default(1)         // We'll link this to real users later
+  createdAt       DateTime @default(now())
+}
