@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma";
-import { Megaphone, Pin } from 'lucide-react';
+import { Megaphone } from 'lucide-react';
 
 export default async function AnnouncementsPage() {
-  // 1. Fetch data
+  // 1. Fetch data - Removed the missing isPinned sort
   const announcements = await prisma.announcement.findMany({
     orderBy: [
       { createdAt: "desc" },
@@ -31,17 +31,10 @@ export default async function AnnouncementsPage() {
           {announcements.map((a) => (
             <div
               key={a.id}
-              className={`bg-white border rounded-[1.5rem] p-6 transition-all hover:shadow-md ${
-                a.isPinned ? 'border-emerald-200 bg-emerald-50/10' : 'border-slate-100'
-              }`}
+              className="bg-white border border-slate-100 rounded-[1.5rem] p-6 transition-all hover:shadow-md"
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  {a.isPinned && (
-                    <div className="flex items-center gap-1 bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 rounded-md tracking-widest">
-                      <Pin size={10} /> PINNED
-                    </div>
-                  )}
                   <h3 className="font-bold text-lg text-slate-800">{a.title}</h3>
                 </div>
                 <span className="text-xs font-bold text-slate-400 uppercase">
@@ -53,7 +46,7 @@ export default async function AnnouncementsPage() {
                 </span>
               </div>
 
-              <p className="text-slate-600 mt-3 leading-relaxed">
+              <p className="text-slate-600 mt-3 leading-relaxed whitespace-pre-wrap">
                 {a.content}
               </p>
             </div>
