@@ -6,7 +6,7 @@ export default function PayNowPage() {
       <h1 className="text-2xl font-bold mb-2">Pay Monthly Dues</h1>
       <p className="text-slate-500 mb-6">Amount due: ₱500</p>
 
-      <form action={createPayment}>
+   <form action={submitManualPayment}>
         <button
           type="submit"
           className="w-full bg-emerald-600 text-white py-3 rounded-xl hover:bg-emerald-700"
