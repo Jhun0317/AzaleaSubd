@@ -12,7 +12,7 @@ export async function createPayment() {
   const amount = 50000; // ₱500.00 (PayMongo uses cents)
 
   // 1️⃣ CREATE PAYMENT RECORD IN DATABASE (IMPORTANT)
-  const payment = await prisma.payment.create({
+const payment = await prisma.paymentSubmission.create({
     data: {
       amount,
       status: "PENDING",
