@@ -11,13 +11,13 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const announcement = await prisma.announcement.create({
-    data: {
-      title: body.title,
-      content: body.content,
-      priority: body.priority || "normal",
-    },
-  });
+const announcement = await prisma.announcement.create({
+  data: {
+    title: body.title,
+    content: body.content,
+    priority: body.priority || "normal",
+  },
+});
 
   return NextResponse.json(announcement);
 }
