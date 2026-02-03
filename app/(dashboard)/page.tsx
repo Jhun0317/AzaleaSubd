@@ -1,10 +1,21 @@
 import { Bell, Search, Wallet, FileText, Calendar, ChevronRight, Megaphone, CreditCard, MessageSquare, LayoutDashboard, User } from 'lucide-react';
 import Link from 'next/link';
+// 1. Import Prisma to talk to your database
+import { prisma } from "@/lib/prisma";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  // 2. Fetch your settings from the database
+  const settings = await prisma.systemSettings.findUnique({
+    where: { id: 1 },
+  });
+
+  // 3. Set the variables with fallbacks if the database is empty
+  const displayDues = settings?.monthlyDues ?? 300;
+  const displayDueDay = settings?.dueDay ?? 15;
+
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
-      {/* HEADER */}
+      {/* HEADER - No changes needed here */}
       <header className="flex items-center justify-between px-8 py-4 bg-white/80 backdrop-blur-md sticky top-0 z-10">
         <div className="relative w-96">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
@@ -57,7 +68,7 @@ export default function DashboardPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            {/* NEW QUICK ACTIONS */}
+            {/* QUICK ACTIONS */}
             <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100">
               <h3 className="font-bold text-slate-800 mb-6">Quick Actions</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -103,12 +114,11 @@ export default function DashboardPage() {
                   </div>
                   <p className="text-xs text-rose-600 leading-relaxed">Please be advised that there will be a scheduled water service interruption...</p>
                 </div>
-                {/* Add more announcements as needed */}
               </div>
             </div>
           </div>
 
-          {/* PAYMENT STATUS COLUMN */}
+          {/* PAYMENT STATUS COLUMN (SYNCCED TO ADMIN) */}
           <div className="space-y-8">
             <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
               <div className="flex justify-between items-center mb-6">
@@ -130,10 +140,14 @@ export default function DashboardPage() {
                 <div className="flex justify-between items-end">
                    <div>
                     <p className="text-[10px] text-slate-400">Monthly Amount</p>
-                    <p className="text-2xl font-black text-slate-800">₱300.00</p>
+                    {/* DISPLAYING DYNAMIC DUES */}
+                    <p className="text-2xl font-black text-slate-800">₱{displayDues}.00</p>
                   </div>
                 </div>
-                <p className="text-[10px] text-slate-400 mt-4 pt-4 border-t border-slate-100 text-center">Due Date: Every 15th of the month</p>
+                {/* DISPLAYING DYNAMIC DUE DAY */}
+                <p className="text-[10px] text-slate-400 mt-4 pt-4 border-t border-slate-100 text-center">
+                    Due Date: Every {displayDueDay}th of the month
+                </p>
               </div>
               <Link href="/client/payments">
                 <button className="w-full py-5 bg-emerald-500 text-white font-bold rounded-2xl hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-100">
