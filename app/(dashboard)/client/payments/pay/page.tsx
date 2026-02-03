@@ -1,4 +1,4 @@
-import { createPayment } from "../actions";
+import { submitManualPayment } from "../actions";
 
 export default function PayNowPage() {
   return (
