@@ -15,8 +15,7 @@ export async function createPayment() {
 const payment = await prisma.paymentSubmission.create({
     data: {
       amount,
-      status: "PENDING",
-      description: "HOA Monthly Dues",
+      status: "PENDING",    
     userId: 1, // ✅ This is a number (integer)
     },
   });
