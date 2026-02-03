@@ -13,11 +13,12 @@ export async function createPayment() {
 
   // 1️⃣ CREATE PAYMENT RECORD IN DATABASE (IMPORTANT)
 const payment = await prisma.paymentSubmission.create({
-    data: {
-      amount,
-      status: "PENDING",    
-    userId: 1, // ✅ This is a number (integer)
-    },
+data: {
+  amount: amount,
+  status: "PENDING",
+  userId: 1,
+  referenceNumber: formData.get("referenceNumber") as string, 
+},
   });
 
   // 2️⃣ CREATE PAYMONGO CHECKOUT LINK
