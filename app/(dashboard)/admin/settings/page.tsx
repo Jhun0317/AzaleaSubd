@@ -4,8 +4,9 @@ import { useState, useRef, useTransition } from "react";
 import { CreditCard, Settings2, Megaphone, FileText, CheckCircle2, Save, Plus, Search, Bell } from "lucide-react";
 import { updateSystemSettings } from "@/app/actions/settings"; 
 
+// Only ONE export default function is allowed
 export default function AdminSettings() {
-  const [activeTab, setActiveTab] = useState("dues"); // Default to dues so you see your work
+  const [activeTab, setActiveTab] = useState("dues"); 
   const [isPending, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -18,9 +19,10 @@ export default function AdminSettings() {
 
   async function handleSubmit(formData: FormData) {
     startTransition(async () => {
+      // This sends the data to your database
       await updateSystemSettings(formData);
       
-      // Clears the inputs after a successful push to the database
+      // This clears the boxes so they are blank for next time
       formRef.current?.reset(); 
       
       alert("Settings pushed to Payments Tab!");
