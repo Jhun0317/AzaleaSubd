@@ -1,13 +1,21 @@
 import { submitPayment } from "@/app/actions/payments";
 import { prisma } from "@/lib/prisma";
-import { Info, Upload } from 'lucide-react';
+import { Info, Upload, CheckCircle2 } from 'lucide-react';
 import CopyButton from "@/components/CopyButton"; 
 
 export const dynamic = "force-dynamic";
 
-export default async function PaymentsPage() {
+// Added searchParams to detect the ?success=true redirect
+export default async function PaymentsPage({ searchParams }: { searchParams: { success?: string } }) {
+  // 1. Fetch settings and history
   const settings = await prisma.systemSettings.findUnique({
     where: { id: 1 }
+  });
+
+  const submissions = await prisma.paymentSubmission.findMany({
+    where: { userId: 1 }, // Later this will use the real logged-in user
+    orderBy: { createdAt: 'desc' },
+    take: 5
   });
 
   const activeGcash = settings?.gcashNumber || "0912049237";
@@ -15,7 +23,17 @@ export default async function PaymentsPage() {
 
   return (
     <div className="p-8 max-w-4xl mx-auto space-y-8">
-      {/* 1. Header Section */}
+      {/* 1. Success Banner */}
+      {searchParams.success === 'true' && (
+        <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
+          <CheckCircle2 className="text-emerald-500" size={20} />
+          <p className="text-sm font-medium text-emerald-800">
+            Payment submitted successfully! Admin will verify your reference number shortly.
+          </p>
+        </div>
+      )}
+
+      {/* 2. Header Section */}
       <div className="flex flex-col items-center text-center mb-8">
         <h1 className="text-3xl font-bold text-slate-900">Monthly Dues</h1>
         <p className="text-slate-500">View and settle your community payments.</p>
@@ -23,7 +41,7 @@ export default async function PaymentsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-6">
-          {/* 2. Amount Due Card */}
+          {/* 3. Amount Due Card */}
           <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Total Amount Due</p>
             <p className="text-4xl font-black text-slate-800 mb-6">₱{activeDues}.00</p>
@@ -36,7 +54,7 @@ export default async function PaymentsPage() {
             </div>
           </div>
 
-          {/* 3. GCash Card */}
+          {/* 4. GCash Card */}
           <div className="bg-emerald-500 p-8 rounded-[2.5rem] text-white shadow-lg shadow-emerald-100">
             <h3 className="font-bold mb-4 text-lg">Pay via GCash</h3>
             <p className="text-sm opacity-90 mb-6">Send payment to the official HOA GCash number:</p>
@@ -50,7 +68,7 @@ export default async function PaymentsPage() {
           </div>
         </div>
 
-        {/* 4. Payment Submission Form (This is the part we updated!) */}
+        {/* 5. Payment Submission Form */}
         <form action={submitPayment} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center">
             <h3 className="font-bold text-slate-800 mb-4">Submit Proof of Payment</h3>
             <div className="w-full space-y-4">
@@ -77,6 +95,31 @@ export default async function PaymentsPage() {
                </button>
             </div>
         </form>
+      </div>
+
+      {/* 6. Submission History Table */}
+      <div className="mt-12 bg-white rounded-[2.5rem] border border-slate-100 p-8 shadow-sm">
+        <h3 className="font-bold text-slate-800 mb-6 text-lg">Recent Submissions</h3>
+        <div className="space-y-4">
+          {submissions.map((sub) => (
+            <div key={sub.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase">Ref: {sub.referenceNumber}</p>
+                <p className="text-[10px] text-slate-500">{sub.createdAt.toLocaleDateString()}</p>
+              </div>
+              <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                sub.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-700' :
+                sub.status === 'REJECTED' ? 'bg-rose-100 text-rose-700' :
+                'bg-amber-100 text-amber-700'
+              }`}>
+                {sub.status}
+              </span>
+            </div>
+          ))}
+          {submissions.length === 0 && (
+            <p className="text-center text-slate-400 text-sm italic">No recent payment submissions found.</p>
+          )}
+        </div>
       </div>
     </div>
   );
