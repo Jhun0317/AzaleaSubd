@@ -2,9 +2,9 @@
 
 import { useState, useRef, useTransition } from "react"; 
 import { CreditCard, Settings2, Megaphone, FileText, CheckCircle2, Save, Plus, Search, Bell } from "lucide-react";
-import { updateSystemSettings } from "@/app/actions/settings"; 
+// Added createAnnouncement here
+import { updateSystemSettings, createAnnouncement } from "@/app/actions/settings"; 
 
-// Only ONE export default function is allowed
 export default function AdminSettings() {
   const [activeTab, setActiveTab] = useState("dues"); 
   const [isPending, startTransition] = useTransition();
@@ -19,13 +19,15 @@ export default function AdminSettings() {
 
   async function handleSubmit(formData: FormData) {
     startTransition(async () => {
-      // This sends the data to your database
-      await updateSystemSettings(formData);
+      if (activeTab === "dues") {
+        await updateSystemSettings(formData);
+        alert("System settings updated!");
+      } else if (activeTab === "announce") {
+        await createAnnouncement(formData);
+        alert("Announcement posted to Resident Dashboard!");
+      }
       
-      // This clears the boxes so they are blank for next time
       formRef.current?.reset(); 
-      
-      alert("Settings pushed to Payments Tab!");
     });
   }
 
@@ -65,6 +67,7 @@ export default function AdminSettings() {
         </div>
 
         <div className="bg-white rounded-xl border border-slate-100 p-8 shadow-sm min-h-[500px]">
+          
           {/* DUES TAB */}
           {activeTab === "dues" && (
             <form ref={formRef} action={handleSubmit} className="max-w-4xl space-y-10">
@@ -106,6 +109,38 @@ export default function AdminSettings() {
                   {isPending ? "Syncing..." : "Save & Push to Payments"}
                 </button>
               </div>
+            </form>
+          )}
+
+          {/* ANNOUNCE TAB */}
+          {activeTab === "announce" && (
+            <form ref={formRef} action={handleSubmit} className="max-w-2xl space-y-6">
+              <div className="space-y-4">
+                <h4 className="font-bold text-slate-800 uppercase text-[11px] tracking-wider">Post New Announcement</h4>
+                <div className="space-y-1.5">
+                  <label className="text-sm text-slate-500">Title</label>
+                  <input name="title" required className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm" placeholder="e.g. Maintenance Notice" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm text-slate-500">Message Content</label>
+                  <textarea name="content" required rows={4} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm" placeholder="Details about the announcement..." />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm text-slate-500">Priority</label>
+                  <select name="priority" className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm">
+                    <option value="normal">Normal</option>
+                    <option value="high">High (Urgent)</option>
+                  </select>
+                </div>
+              </div>
+              <button 
+                type="submit" 
+                disabled={isPending}
+                className="bg-blue-600 text-white px-8 py-2.5 rounded-lg font-bold text-sm hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
+              >
+                <Megaphone size={18} /> 
+                {isPending ? "Posting..." : "Post Announcement"}
+              </button>
             </form>
           )}
 
