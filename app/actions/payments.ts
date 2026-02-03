@@ -4,12 +4,11 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+// --- Action 1: For Residents to Submit ---
 export async function submitPayment(formData: FormData) {
   const referenceNumber = formData.get("referenceNumber") as string;
   
   if (!referenceNumber || referenceNumber.length < 10) {
-    // Instead of throwing an error that crashes the build, 
-    // we can handle this with a redirect or just return
     return;
   }
 
@@ -18,7 +17,7 @@ export async function submitPayment(formData: FormData) {
       data: {
         referenceNumber,
         status: "PENDING",
-        amount: 300, // You can fetch the real dues here later
+        amount: 300, 
         userId: 1, 
       },
     });
@@ -26,10 +25,25 @@ export async function submitPayment(formData: FormData) {
     revalidatePath("/client/payments");
   } catch (error) {
     console.error("Payment submission failed:", error);
-    // Returning nothing (void) satisfies the TypeScript error
     return;
   }
 
-  // Optional: Redirect them to a success page or back home
   redirect("/client/payments?success=true");
+}
+
+// --- Action 2: For Admins to Approve/Reject ---
+export async function updatePaymentStatus(id: number, status: "APPROVED" | "REJECTED") {
+  try {
+    await prisma.paymentSubmission.update({
+      where: { id },
+      data: { status },
+    });
+    
+    // Refresh both paths so the Admin sees the list update 
+    // and the Client sees their history update
+    revalidatePath("/admin/payments");
+    revalidatePath("/client/payments");
+  } catch (error) {
+    console.error("Status update failed:", error);
+  }
 }
