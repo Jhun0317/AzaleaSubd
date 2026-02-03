@@ -17,7 +17,7 @@ const payment = await prisma.paymentSubmission.create({
       amount,
       status: "PENDING",
       description: "HOA Monthly Dues",
-      userId: "demo-user-id", // replace with real user later
+    userId: 1, // ✅ This is a number (integer)
     },
   });
 
