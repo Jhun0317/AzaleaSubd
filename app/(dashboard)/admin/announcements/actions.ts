@@ -14,6 +14,7 @@ export async function postAnnouncement(formData: FormData) {
     },
   });
 
-  // This clears the cache so the resident sees the new post immediately
-  revalidatePath("/"); 
+  // This tells the website to refresh the dashboard and tabs
+  revalidatePath("/(dashboard)/client/dashboard");
+  revalidatePath("/(dashboard)/client/announcements");
 }
