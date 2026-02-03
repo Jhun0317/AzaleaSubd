@@ -50,10 +50,10 @@ model PaymentSubmission {
 
 // 4. CMS Features
 model Announcement {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid()) // Change this from Int to String
   title     String
-  content   String
-  priority  String   @default("NORMAL") // e.g., HIGH, NORMAL
+  content   String   @db.Text
+  priority  String   @default("normal")
   createdAt DateTime @default(now())
 }
 
