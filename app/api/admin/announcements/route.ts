@@ -16,7 +16,6 @@ export async function POST(req: NextRequest) {
       title: body.title,
       content: body.content,
       priority: body.priority || "normal",
-      isPinned: body.isPinned || false,
     },
   });
 
